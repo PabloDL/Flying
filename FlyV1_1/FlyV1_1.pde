@@ -1,16 +1,16 @@
 int scl = 30;
-int rows, cols;
-int w = 2000;
-int h = 2000;
+int rows, colums;
+int terrainWidth = 2000;
+int terrainlenght = 2000;
 float [][] terrain;
-float flying = 0;
+float flyingSpeed = 0;
 float perspective;
 
 void setup(){
     size(1000,800,P3D);
-    cols=w/scl;
-    rows=h/scl;
-    terrain = new float [rows][cols];
+    columns=terrainWidth/gridscale;
+    rows=terrainlenght/gridscale;
+    terrain = new float [rows][columns];
     
     
     
@@ -20,31 +20,30 @@ void draw(){
     background(0);
     noStroke();
     colorMode(RGB);
-    //fill(220,160,40);
-    //ambientLight();
-    directionalLight(70,70,90,1500,1000,2000);
-    float yoff=flying;
+    fill(220,160,40);
+    directionalLight(70,70,90,1500,1000,1500);
+    float yoff=flyingSpeed;
     for (int y=0; y<rows; y++){
         perspective= y*0.05;
         float xoff=0;
-        for ( int x=0; x<cols; x++){
+        for ( int x=0; x<columns; x++){
             terrain [x][y] = map(noise(xoff,yoff),0,1,-50*perspective,50*perspective);
-            xoff-=0.1;
+            xoff-=0.05;
         }
-        yoff-=0.1;
+        yoff-=0.05;
     }
     
     translate(width/2, height/2);
     rotateX(radians(80));
-    translate(-w/2,-1520);
+    translate(-terrainWidth/2,-1520);
     
     for (int y = 0 ; y < rows-1 ; y++){
         beginShape(TRIANGLE_STRIP);
-        for(int x=0 ; x<cols ; x++){
-            vertex(x*scl,y*scl,terrain[x][y]);
-            vertex(x*scl,(y+1)*scl,terrain[x][y+1]);
+        for(int x=0 ; x<columns ; x++){
+            vertex(x*gridscale,y*gridscale,terrain[x][y]);
+            vertex(x*gridscale,(y+1)*gridscale,terrain[x][y+1]);
         }
         endShape();
     }
-    flying+=0.1;
+    flyingSpeed+=0.05;
 }
